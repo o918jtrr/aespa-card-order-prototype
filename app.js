@@ -52,17 +52,9 @@ let itemDrafts = [
   ["套收", "四人套收", "K4 Karina + Giselle + Winter + Ningning 套收"],
 ];
 
-const orders = [
-  ["AE260612-018", "林小卡", "冬寧", "已填五碼", "NT$880"],
-  ["AE260612-017", "Chen", "柚", "待匯款", "NT$420"],
-  ["AE260611-029", "Mina", "套收", "已確認入帳", "NT$1480"],
-];
+const orders = [];
 
-const emails = [
-  ["AE260612-018", "訂單建立通知", "已寄出", "2026/06/12 14:10"],
-  ["AE260611-029", "付款確認通知", "已寄出", "2026/06/12 11:42"],
-  ["AE260610-006", "到貨通知", "寄送失敗", "可重新寄送"],
-];
+const emails = [];
 
 let selected = null;
 let mainPreviewUrl = "";
@@ -90,6 +82,7 @@ function optionStock(option) {
 
 function renderProducts() {
   const grid = document.querySelector("#productGrid");
+  updateStorefrontAvailability();
   if (products.length === 0) {
     grid.innerHTML = `<article class="empty-state">目前尚未開放小卡，請等待版主更新。</article>`;
     return;
@@ -107,6 +100,18 @@ function renderProducts() {
       </div>
     </article>
   `).join("");
+  updateStorefrontAvailability();
+}
+
+function updateStorefrontAvailability() {
+  const hasProducts = products.length > 0;
+  document.querySelector("#productDetail").classList.toggle("hidden", !hasProducts);
+  document.querySelector("#order").classList.toggle("hidden", !hasProducts);
+  if (!hasProducts) return;
+
+  const currentName = products[0][0];
+  document.querySelector("#productDetail h2").textContent = currentName;
+  document.querySelector("#order .summary-card strong").textContent = currentName;
 }
 
 function renderOptions() {
@@ -152,27 +157,6 @@ function renderStock() {
     `;
   }).join("");
   document.querySelector("#stockTable").innerHTML = rows;
-}
-
-function renderOrders() {
-  document.querySelector("#orderList").innerHTML = orders.map(([id, name, item, status, price]) => `
-    <article class="order-row">
-      <div><strong>${id}</strong><div class="row-meta">${name} · ${item}</div></div>
-      <span>${price}</span>
-      <span class="tag">${status}</span>
-      <button class="ghost-button">查看</button>
-    </article>
-  `).join("");
-}
-
-function renderEmails() {
-  document.querySelector("#emailLog").innerHTML = emails.map(([id, type, status, time]) => `
-    <article class="email-row">
-      <div><strong>${id}</strong><div class="row-meta">${type}</div></div>
-      <span class="tag ${status.includes("失敗") ? "warn" : "ok"}">${status}</span>
-      <span>${time}</span>
-    </article>
-  `).join("");
 }
 
 function renderItemEditor() {
@@ -279,8 +263,6 @@ function renderPaymentDeadline() {
 renderProducts();
 renderOptions();
 renderStock();
-renderOrders();
-renderEmails();
 renderItemEditor();
 renderPaymentDeadline();
 bindModeTabs();

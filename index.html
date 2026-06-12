@@ -72,7 +72,7 @@
           <div class="product-grid" id="productGrid"></div>
         </section>
 
-        <section class="section product-detail">
+        <section class="section product-detail" id="productDetail">
           <div class="image-frame">
             <div class="album-visual">
               <span>K4</span>
@@ -174,14 +174,14 @@
         <section class="section status-pages" id="lookup">
           <article>
             <h3>回填匯款後五碼</h3>
-            <label>訂單編號<input value="AE260612-018" /></label>
+            <label>訂單編號<input placeholder="送出訂單後產生" /></label>
             <label>Email 或手機<input placeholder="name@example.com / 0912345678" /></label>
             <label>匯款後五碼<input placeholder="12345" /></label>
             <button class="ghost-button">送出匯款資訊</button>
           </article>
           <article>
             <h3>訂單查詢</h3>
-            <label>訂單編號<input value="AE260612-018" /></label>
+            <label>訂單編號<input placeholder="送出訂單後產生" /></label>
             <label>Email<input placeholder="name@example.com" /></label>
             <div class="timeline">
               <span class="done">已建立</span>
@@ -205,10 +205,10 @@
           </aside>
           <div class="admin-content">
             <section id="dashboard" class="dashboard-cards">
-              <article><span>待查帳</span><strong>8</strong></article>
-              <article><span>待到貨</span><strong>16</strong></article>
-              <article><span>Email 失敗</span><strong>2</strong></article>
-              <article><span>低庫存品項</span><strong>3</strong></article>
+              <article><span>待查帳</span><strong>0</strong></article>
+              <article><span>待到貨</span><strong>0</strong></article>
+              <article><span>Email 失敗</span><strong>0</strong></article>
+              <article><span>低庫存品項</span><strong>0</strong></article>
             </section>
 
             <section id="adminProducts" class="admin-section">
@@ -291,6 +291,7 @@
 
     <div class="toast" id="toast">訂單已建立：AE260612-018</div>
     <script src="app.js"></script>
+    <script src="records.js"></script>
     <script src="admin-flow.js"></script>
   </body>
 </html>

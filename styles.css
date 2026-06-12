@@ -70,6 +70,7 @@ button, a { font: inherit; }
 
 .mode-panel { display: none; }
 .mode-panel.active { display: block; }
+.hidden { display: none !important; }
 .section, .hero, .warning-panel, .admin-shell { max-width: 1120px; margin: 0 auto; }
 
 .hero {
