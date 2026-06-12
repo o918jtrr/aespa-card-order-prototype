@@ -1,0 +1,107 @@
+.app-shell {
+  display: none;
+}
+
+body.entered .app-shell {
+  display: flex;
+}
+
+body.entered main.app-shell {
+  display: block;
+}
+
+body.entered .entry-screen {
+  display: none;
+}
+
+.entry-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+}
+
+.entry-card {
+  width: min(100%, 680px);
+  padding: 28px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.entry-card h1 {
+  margin: 0 0 14px;
+  font-size: 34px;
+}
+
+.admin-toolbar, .managed-products {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-toolbar {
+  padding: 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.admin-toolbar p {
+  margin-bottom: 0;
+  font-size: 13px;
+}
+
+.managed-product, .stock-accordion {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.managed-product label {
+  color: var(--muted);
+}
+
+.managed-product input {
+  margin-top: 6px;
+}
+
+.managed-product.active {
+  border-color: #8ea0b1;
+  background: #f4f7f9;
+}
+
+.stock-toggle {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.stock-body {
+  display: none;
+  gap: 8px;
+}
+
+.stock-accordion.open .stock-body {
+  display: grid;
+}
+
+@media (min-width: 760px) {
+  .admin-toolbar {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+
+  .managed-products {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

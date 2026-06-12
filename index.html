@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>aespa 小卡代購收單原型</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="warnings.css" />
+    <link rel="stylesheet" href="checkout.css" />
+    <link rel="stylesheet" href="product-admin.css" />
+    <link rel="stylesheet" href="entry-admin.css" />
+  </head>
+  <body>
+    <section id="entryScreen" class="entry-screen">
+      <div class="entry-card">
+        <span class="status-pill">aespa 小卡拼車</span>
+        <h1>aespa 小卡代購／切卡收單</h1>
+        <p>這裡只會開 aespa 小卡相關收單。是否開團會依版主或版主朋友想收的項目決定。</p>
+        <button class="primary-button" id="enterSite">進入目前開放小卡</button>
+      </div>
+    </section>
+
+    <header class="topbar app-shell">
+      <div>
+        <p class="eyebrow">personal photocard order studio</p>
+        <h1>aespa 小卡代購收單</h1>
+      </div>
+      <nav class="mode-tabs" aria-label="畫面模式">
+        <button class="active" data-mode="storefront">前台</button>
+        <button data-mode="admin">後台</button>
+      </nav>
+    </header>
+
+    <main class="app-shell">
+      <section id="storefront" class="mode-panel active">
+        <section class="hero">
+          <div class="hero-copy">
+            <span class="status-pill">aespa 小卡拼車</span>
+            <h2>aespa 小卡代購／切卡收單</h2>
+            <p>這裡只開 aespa 小卡相關收單，但不一定每一組都會開。只有版主或版主朋友有想開、想收時才會成團。</p>
+            <p>可以先把這個網頁加入我的最愛；如果有新小卡開團，沒意外的話一週內會更新資訊。</p>
+            <div class="hero-actions">
+              <a href="#products" class="primary-button">查看目前開放小卡</a>
+              <a href="#lookup" class="ghost-button">查詢訂單</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="warning-panel">
+          <div>
+            <p class="eyebrow">notice</p>
+            <h2>⚠️ 注意事項（請詳閱）</h2>
+          </div>
+          <ul>
+            <li>⚠️ 下單視同已閱畢說明，並同意本頁所有規則。</li>
+            <li>⚠️ 不接受未成年人下單。</li>
+            <li>⚠️ 非現貨代購皆需要等待 30 至 60 天。</li>
+            <li>⚠️ 若跑單將收取 30% 跑單費，並列入黑名單。</li>
+            <li>小卡皆為在途，保證不會跑單。若運輸過程有任何風險，皆由我們自行承擔，請放心購買。</li>
+            <li>頁面上的品項皆為「單卡」，不包含專輯。若有需要購買專輯，請至其他賣場選購。</li>
+            <li>商品默認廠瑕（出廠瑕疵），下單後不退不換。</li>
+            <li>如果小卡包含自拍卡與拍立得，本站不提供協助拆拍立得的服務。</li>
+          </ul>
+          <strong>下單即視同同意以上所有規則。</strong>
+        </section>
+
+        <section id="products" class="section">
+          <div class="section-heading">
+            <p class="eyebrow">open items</p>
+            <h2>目前開放小卡</h2>
+          </div>
+          <div class="product-grid" id="productGrid"></div>
+        </section>
+
+        <section class="section product-detail">
+          <div class="image-frame">
+            <div class="album-visual">
+              <span>K4</span>
+              <strong>preview collage</strong>
+            </div>
+          </div>
+          <div class="detail-panel">
+            <span class="status-pill">收單中</span>
+            <h2>K4 小卡／拍立得切卡</h2>
+            <p>非現貨代購皆需要等 30 至 60 天。請選擇想帶的品項，系統會自動檢查是否仍可下單。</p>
+            <div class="policy-note">
+              <strong>拆拍立得提醒</strong>
+              <span>如果小卡包含自拍卡與拍立得，本站不提供協助拆拍立得的服務。</span>
+            </div>
+            <div class="option-grid" id="optionGrid"></div>
+            <div class="order-summary">
+              <div>
+                <small>已選品項</small>
+                <strong id="selectedOption">尚未選擇</strong>
+              </div>
+              <div>
+                <small>金額</small>
+                <strong id="selectedPrice">--</strong>
+              </div>
+            </div>
+            <a href="#order" class="primary-button full">我要下單</a>
+          </div>
+        </section>
+
+        <section id="order" class="section split-section">
+          <div>
+            <p class="eyebrow">checkout</p>
+            <h2>下單資料</h2>
+            <div class="summary-card">
+              <div class="thumb"></div>
+              <div>
+                <strong>K4 小卡／拍立得切卡</strong>
+                <p><span id="checkoutOption">請先選擇品項</span> · <span id="checkoutPrice">--</span></p>
+              </div>
+            </div>
+            <div class="deadline-card">
+              <strong>請先完成轉帳，再填寫下單資料</strong>
+              <span>請依照下方 Line Bank 帳戶完成轉帳，並於下單當天 <b id="paymentDeadline">23:59</b> 前送出表單。</span>
+              <div class="bank-card">
+                <span>Line Bank</span>
+                <b>824-111000189914</b>
+              </div>
+            </div>
+            <div class="rule-list">
+              <div>
+                <strong>未付款取消紀錄</strong>
+                <span>若未於期限內付款，我會手動取消訂單，系統會將庫存自動回架。</span>
+              </div>
+              <div>
+                <strong>黑名單規則</strong>
+                <span>Email 或手機累積 2 次未付款取消紀錄，之後會被鎖定不可下單。</span>
+              </div>
+              <div>
+                <strong>姓名請填本名</strong>
+                <span>賣貨便品項會用本名辨識，例如王小卡會顯示為王○卡。</span>
+              </div>
+            </div>
+            <form class="clean-form">
+              <label>本名 *<input placeholder="王小卡" /></label>
+              <label>Email *<input placeholder="name@example.com" /></label>
+              <label>手機號碼 *<input placeholder="0912345678" /></label>
+              <label>IG 帳號 *<input placeholder="@your_ig" /></label>
+              <div class="payment-fields">
+                <h3>匯款資訊</h3>
+                <label>匯款後五碼 *<input placeholder="12345" /></label>
+                <label>匯款金額 *<input placeholder="請填實際轉帳金額" /></label>
+                <label>匯款時間 *<input placeholder="例如 06/12 20:30" /></label>
+              </div>
+              <label>備註<textarea placeholder="可填寫希望聯絡時間或其他說明"></textarea></label>
+              <div class="checks">
+                <label><input type="checkbox" /> 我知道此為代購／切卡收單，非現貨。</label>
+                <label><input type="checkbox" /> 我知道此站一卡一拍，拍立得拆拍需自行找人。</label>
+                <label><input type="checkbox" /> 我知道小卡可能有初傷、壓痕、白邊或裁切不均。</label>
+                <label><input type="checkbox" /> 我已完成轉帳，並確認匯款資訊填寫正確。</label>
+                <label><input type="checkbox" /> 我知道兩次未付款取消會以 Email 或手機鎖定下單。</label>
+                <label><input type="checkbox" /> 我確認姓名填寫本名，方便後續賣貨便辨識。</label>
+                <label><input type="checkbox" /> 我確認 Email、手機與 IG 填寫正確。</label>
+              </div>
+              <button type="button" class="primary-button full" id="submitOrder">送出訂單</button>
+            </form>
+          </div>
+          <aside class="process-card">
+            <h3>訂單完成預覽</h3>
+            <ol>
+              <li>建立訂單並扣庫存</li>
+              <li>先完成 Line Bank 轉帳</li>
+              <li>填寫下單資料與匯款資訊</li>
+              <li>未付款取消會自動回補庫存</li>
+              <li>到貨後寄賣貨便連結</li>
+            </ol>
+          </aside>
+        </section>
+
+        <section class="section status-pages" id="lookup">
+          <article>
+            <h3>回填匯款後五碼</h3>
+            <label>訂單編號<input value="AE260612-018" /></label>
+            <label>Email 或手機<input placeholder="name@example.com / 0912345678" /></label>
+            <label>匯款後五碼<input placeholder="12345" /></label>
+            <button class="ghost-button">送出匯款資訊</button>
+          </article>
+          <article>
+            <h3>訂單查詢</h3>
+            <label>訂單編號<input value="AE260612-018" /></label>
+            <label>Email<input placeholder="name@example.com" /></label>
+            <div class="timeline">
+              <span class="done">已建立</span>
+              <span class="done">已填五碼</span>
+              <span>等待查帳</span>
+              <span>等待到貨</span>
+            </div>
+          </article>
+        </section>
+      </section>
+
+      <section id="admin" class="mode-panel">
+        <section class="admin-shell">
+          <aside class="admin-nav">
+            <strong>管理後台</strong>
+            <a href="#dashboard">總覽</a>
+            <a href="#adminProducts">商品</a>
+            <a href="#stock">庫存</a>
+            <a href="#orders">訂單</a>
+            <a href="#emails">Email</a>
+          </aside>
+          <div class="admin-content">
+            <section id="dashboard" class="dashboard-cards">
+              <article><span>待查帳</span><strong>8</strong></article>
+              <article><span>待到貨</span><strong>16</strong></article>
+              <article><span>Email 失敗</span><strong>2</strong></article>
+              <article><span>低庫存品項</span><strong>3</strong></article>
+            </section>
+
+            <section id="adminProducts" class="admin-section">
+              <div class="section-heading">
+                <p class="eyebrow">product admin</p>
+                <h2>商品管理</h2>
+              </div>
+              <div class="admin-toolbar">
+                <div>
+                  <h3>商品項目清單</h3>
+                  <p>先選擇要管理的商品，再編輯價格、庫存與圖片。</p>
+                </div>
+                <button class="ghost-button" id="addProduct">新增項目</button>
+              </div>
+              <div class="managed-products" id="managedProducts"></div>
+              <div class="admin-card">
+                <h3 id="editorTitle">編輯：K4 幸運卡</h3>
+                <div class="form-grid">
+                  <label>商品名稱<input value="K4 幸運卡" /></label>
+                  <label>商品狀態<select><option>收單中</option><option>草稿</option><option>已截止</option></select></label>
+                  <label>總套數<input value="5" /></label>
+                  <label>Giselle 自留<input value="0" /></label>
+                  <label>Winter 自留<input value="2" /></label>
+                </div>
+                <div class="currency-card">
+                  <div>
+                    <h3>人民幣成本與匯率</h3>
+                    <p>不串即時匯率，請手動填寫這一套小卡的人民幣成本與採用匯率。</p>
+                  </div>
+                  <div class="form-grid">
+                    <label>人民幣總價<input placeholder="例如 320" /></label>
+                    <label>手動匯率<input placeholder="例如 4.55" /></label>
+                    <label>台幣成本估算<input placeholder="可手動填換算後金額" /></label>
+                    <label>其他費用<input placeholder="國際運、包材或雜費" /></label>
+                  </div>
+                </div>
+                <div class="upload-grid">
+                  <label class="upload-box">
+                    商品預覽圖
+                    <input type="file" accept="image/*" data-preview-input="mainPreview" />
+                    <span>可上傳一張含四張小卡的圖鑑</span>
+                  </label>
+                  <div class="preview-box" id="mainPreview">
+                    <span>K4 預覽圖</span>
+                  </div>
+                </div>
+                <div class="admin-subsection">
+                  <div>
+                    <h3>品項名稱與圖片</h3>
+                    <p>可針對自拍卡、拍立得或同一張預覽圖中的不同品項輸入標題。</p>
+                  </div>
+                  <div class="item-editor" id="itemEditor"></div>
+                </div>
+                <button class="primary-button">儲存商品</button>
+              </div>
+            </section>
+
+            <section id="stock" class="admin-section">
+              <h2>庫存管理</h2>
+              <div class="data-table" id="stockTable"></div>
+            </section>
+
+            <section id="orders" class="admin-section">
+              <h2>訂單列表</h2>
+              <div class="order-list" id="orderList"></div>
+            </section>
+
+            <section id="emails" class="admin-section">
+              <h2>到貨通知／Email 紀錄</h2>
+              <div class="admin-card">
+                <label>賣貨便 20 元連結<input placeholder="https://myship.7-11.com.tw/..." /></label>
+                <button class="primary-button">預覽並通知已付款顧客</button>
+              </div>
+              <div class="email-log" id="emailLog"></div>
+            </section>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div class="toast" id="toast">訂單已建立：AE260612-018</div>
+    <script src="app.js"></script>
+    <script src="admin-flow.js"></script>
+  </body>
+</html>

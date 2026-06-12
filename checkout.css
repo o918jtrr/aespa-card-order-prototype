@@ -1,0 +1,52 @@
+.deadline-card, .rule-list, .payment-fields {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.deadline-card {
+  padding: 14px;
+  background: #f4f0f7;
+  border: 1px solid #e3d9ec;
+  border-radius: 8px;
+}
+
+.deadline-card span, .rule-list span {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.bank-card {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #e3d9ec;
+  border-radius: 8px;
+}
+
+.bank-card b {
+  font-size: 18px;
+  letter-spacing: .02em;
+}
+
+.payment-fields {
+  padding: 14px;
+  background: #fbfaf7;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.payment-fields h3 {
+  margin-bottom: 2px;
+}
+
+.rule-list div {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  background: #fbfaf7;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
