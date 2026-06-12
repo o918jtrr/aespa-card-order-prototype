@@ -37,11 +37,7 @@ const optionNeeds = {
   "套收": ["karina", "giselle", "winter", "ningning"],
 };
 
-const products = [
-  ["K4 小卡／拍立得切卡", "收單中", "10 個品項", "Winter 剩 0"],
-  ["Drama POP-UP 小卡代購", "收單中", "8 個品項", "套收剩 2"],
-  ["Armageddon 展場特典", "已截止", "可查詢", "不可下單"],
-];
+const products = [];
 
 let itemDrafts = [
   ["柚", "Karina", "K4 Karina 自拍卡"],
@@ -94,6 +90,11 @@ function optionStock(option) {
 
 function renderProducts() {
   const grid = document.querySelector("#productGrid");
+  if (products.length === 0) {
+    grid.innerHTML = `<article class="empty-state">目前尚未開放小卡，請等待版主更新。</article>`;
+    return;
+  }
+
   grid.innerHTML = products.map(([name, status, options, stock], index) => `
     <article class="product-card">
       <div class="product-art" ${index === 0 && mainPreviewUrl ? `style="background-image:url('${mainPreviewUrl}')"` : ""}>

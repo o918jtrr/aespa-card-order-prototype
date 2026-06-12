@@ -1,10 +1,6 @@
-const managedProducts = [
-  { name: "K4 幸運卡", status: "收單中", note: "目前前台主商品" },
-  { name: "Drama POP-UP 小卡", status: "收單中", note: "待補品項價格" },
-  { name: "Armageddon 展場特典", status: "已截止", note: "保留查詢" },
-];
+const managedProducts = [];
 
-let activeManagedIndex = 0;
+let activeManagedIndex = -1;
 
 function bindEntry() {
   document.querySelector("#enterSite").addEventListener("click", () => {
@@ -15,14 +11,22 @@ function bindEntry() {
 
 function renderManagedProducts() {
   const list = document.querySelector("#managedProducts");
+  if (managedProducts.length === 0) {
+    list.innerHTML = `<article class="empty-state">尚未建立商品項目，請按「新增項目」開始。</article>`;
+    updateActiveProductTitle();
+    return;
+  }
+
   list.innerHTML = managedProducts.map((item, index) => `
     <article class="managed-product ${index === activeManagedIndex ? "active" : ""}">
+      <button class="remove-managed" data-delete-product="${index}" aria-label="刪除 ${item.name}">×</button>
       <label>商品名稱
         <input value="${item.name}" data-product-name="${index}" />
       </label>
       <span class="tag">${item.status}</span>
       <span>${item.note}</span>
       <button class="ghost-button" data-product-index="${index}">編輯此項目</button>
+      <button class="ghost-button delete-product" data-delete-product="${index}">刪除品項</button>
     </article>
   `).join("");
 
@@ -44,10 +48,15 @@ function renderManagedProducts() {
       renderManagedProducts();
     });
   });
+
+  document.querySelectorAll("[data-delete-product]").forEach((button) => {
+    button.addEventListener("click", () => deleteManagedProduct(Number(button.dataset.deleteProduct)));
+  });
 }
 
 function updateActiveProductTitle() {
-  document.querySelector("#editorTitle").textContent = `編輯：${managedProducts[activeManagedIndex].name}`;
+  const title = managedProducts[activeManagedIndex]?.name;
+  document.querySelector("#editorTitle").textContent = title ? `編輯：${title}` : "請先新增或選擇商品";
 }
 
 function bindAddProduct() {
@@ -66,7 +75,28 @@ function bindAddProduct() {
   });
 }
 
+function deleteManagedProduct(index) {
+  managedProducts.splice(index, 1);
+  products.splice(index, 1);
+
+  if (managedProducts.length === 0) {
+    activeManagedIndex = -1;
+  } else if (activeManagedIndex >= managedProducts.length) {
+    activeManagedIndex = managedProducts.length - 1;
+  }
+
+  renderManagedProducts();
+  renderProducts();
+  renderStockAccordions();
+}
+
 function renderStockAccordions() {
+  if (managedProducts.length === 0) {
+    document.querySelector("#stockTable").innerHTML =
+      `<article class="empty-state">尚未建立商品項目，因此目前沒有庫存管理資料。</article>`;
+    return;
+  }
+
   const remaining = remainingByMember();
   const stockRows = Object.entries(remaining).map(([key, amount]) => `
     <div class="table-row">
@@ -79,24 +109,15 @@ function renderStockAccordions() {
     </div>
   `).join("");
 
-  document.querySelector("#stockTable").innerHTML = `
-    <article class="stock-accordion open">
+  document.querySelector("#stockTable").innerHTML = managedProducts.map((item, index) => `
+    <article class="stock-accordion ${index === 0 ? "open" : ""}">
       <button class="stock-toggle" data-stock-toggle>
-        <strong>${managedProducts[0].name}庫存管理</strong>
-        <span>點擊收合／展開</span>
+        <strong>${item.name}庫存管理</strong>
+        <span>${index === 0 ? "點擊收合／展開" : "待設定"}</span>
       </button>
-      <div class="stock-body">${stockRows}</div>
+      <div class="stock-body">${index === 0 ? stockRows : `<div class="table-row"><strong>尚未建立庫存</strong><span>請先完成商品設定</span></div>`}</div>
     </article>
-    <article class="stock-accordion">
-      <button class="stock-toggle" data-stock-toggle>
-        <strong>${managedProducts[1]?.name || "第二筆商品"}庫存管理</strong>
-        <span>待設定</span>
-      </button>
-      <div class="stock-body">
-        <div class="table-row"><strong>尚未建立庫存</strong><span>請先完成商品設定</span></div>
-      </div>
-    </article>
-  `;
+  `).join("");
 
   document.querySelectorAll("[data-stock-toggle]").forEach((button) => {
     button.addEventListener("click", () => button.closest(".stock-accordion").classList.toggle("open"));

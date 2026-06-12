@@ -52,12 +52,44 @@ body.entered .entry-screen {
 }
 
 .managed-product, .stock-accordion {
+  position: relative;
   display: grid;
   gap: 8px;
   padding: 14px;
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 8px;
+}
+
+.managed-product {
+  padding-top: 42px;
+}
+
+.remove-managed {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #e6cfd3;
+  border-radius: 999px;
+  background: #fff7f8;
+  color: #9f4d4d;
+  cursor: pointer;
+}
+
+.delete-product {
+  color: #7d4d56;
+}
+
+.empty-state {
+  padding: 18px;
+  background: var(--card);
+  border: 1px dashed #c8c1ba;
+  border-radius: 8px;
+  color: var(--muted);
 }
 
 .managed-product label {
