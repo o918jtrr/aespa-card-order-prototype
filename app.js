@@ -6,22 +6,11 @@ const members = {
 };
 
 const product = {
-  name: "K4 小卡／拍立得切卡",
+  name: "",
   totalSets: 5,
   reserved: { karina: 0, giselle: 0, winter: 2, ningning: 0 },
-  sold: { karina: 0, giselle: 1, winter: 3, ningning: 1 },
-  prices: {
-    "柚": 420,
-    "吉": 360,
-    "冬": 520,
-    "寧": 380,
-    "柚吉": 760,
-    "柚寧": 780,
-    "冬吉": 850,
-    "冬寧": 880,
-    "吉寧": 720,
-    "套收": 1480,
-  },
+  sold: { karina: 0, giselle: 0, winter: 0, ningning: 0 },
+  prices: {},
 };
 
 const optionNeeds = {
@@ -40,16 +29,16 @@ const optionNeeds = {
 const products = [];
 
 let itemDrafts = [
-  ["柚", "Karina", "K4 Karina 自拍卡"],
-  ["吉", "Giselle", "K4 Giselle 自拍卡"],
-  ["冬", "Winter", "K4 Winter 拍立得"],
-  ["寧", "Ningning", "K4 Ningning 自拍卡"],
-  ["柚吉", "Karina + Giselle", "K4 Karina + Giselle 多帶"],
-  ["柚寧", "Karina + Ningning", "K4 Karina + Ningning 多帶"],
-  ["冬吉", "Winter + Giselle", "K4 Winter + Giselle 多帶"],
-  ["冬寧", "Winter + Ningning", "K4 Winter + Ningning 多帶"],
-  ["吉寧", "Giselle + Ningning", "K4 Giselle + Ningning 多帶"],
-  ["套收", "四人套收", "K4 Karina + Giselle + Winter + Ningning 套收"],
+  ["柚", "Karina", "Karina"],
+  ["吉", "Giselle", "Giselle"],
+  ["冬", "Winter", "Winter"],
+  ["寧", "Ningning", "Ningning"],
+  ["柚吉", "Karina + Giselle", "Karina + Giselle"],
+  ["柚寧", "Karina + Ningning", "Karina + Ningning"],
+  ["冬吉", "Winter + Giselle", "Winter + Giselle"],
+  ["冬寧", "Winter + Ningning", "Winter + Ningning"],
+  ["吉寧", "Giselle + Ningning", "Giselle + Ningning"],
+  ["套收", "四人套收", "四人套收"],
 ];
 
 const orders = [];
@@ -119,9 +108,10 @@ function renderOptions() {
   grid.innerHTML = Object.keys(optionNeeds).map((option) => {
     const stock = optionStock(option);
     const disabled = stock <= 0;
+    const price = product.prices[option] ? `NT$${product.prices[option]}` : "未定價";
     return `
       <button class="option-button" data-option="${option}" ${disabled ? "disabled" : ""}>
-        ${option}<small>${disabled ? "售完" : `NT$${product.prices[option]} · 剩 ${stock}`}</small>
+        ${option}<small>${disabled ? "售完" : `${price} · 剩 ${stock}`}</small>
       </button>
     `;
   }).join("");
@@ -137,9 +127,9 @@ function selectOption(option) {
     button.classList.toggle("active", button.dataset.option === option);
   });
   document.querySelector("#selectedOption").textContent = option;
-  document.querySelector("#selectedPrice").textContent = `NT$${product.prices[option]}`;
+  document.querySelector("#selectedPrice").textContent = product.prices[option] ? `NT$${product.prices[option]}` : "未定價";
   document.querySelector("#checkoutOption").textContent = option;
-  document.querySelector("#checkoutPrice").textContent = `NT$${product.prices[option]}`;
+  document.querySelector("#checkoutPrice").textContent = product.prices[option] ? `NT$${product.prices[option]}` : "未定價";
 }
 
 function renderStock() {
@@ -217,7 +207,7 @@ function updateFrontPreview(imageUrl) {
   const thumb = document.querySelector(".thumb");
   const firstCard = document.querySelector(".product-card .product-art");
 
-  if (detail) detail.innerHTML = `<img src="${imageUrl}" alt="K4 商品預覽圖" />`;
+  if (detail) detail.innerHTML = `<img src="${imageUrl}" alt="商品預覽圖" />`;
   if (thumb) thumb.style.backgroundImage = `url('${imageUrl}')`;
   if (firstCard) firstCard.style.backgroundImage = `url('${imageUrl}')`;
 }
@@ -249,7 +239,7 @@ function bindSubmit() {
   document.querySelector("#submitOrder").addEventListener("click", () => {
     const toast = document.querySelector("#toast");
     toast.textContent = selected
-      ? `訂單已建立：AE260612-018，請於 ${todayPaymentDeadline()} 前轉帳`
+      ? `下單資料已送出，請於 ${todayPaymentDeadline()} 前完成確認`
       : "請先在商品詳情選擇可下單品項";
     toast.classList.add("show");
     setTimeout(() => toast.classList.remove("show"), 2600);
