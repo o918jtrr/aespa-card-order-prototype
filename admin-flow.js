@@ -75,6 +75,16 @@ function bindAddProduct() {
   });
 }
 
+function bindInventoryInputs() {
+  const totalSetsInput = document.querySelector("#totalSetsInput");
+  totalSetsInput.addEventListener("input", () => {
+    const nextTotal = Math.min(Number(totalSetsInput.value) || 0, 5);
+    product.totalSets = nextTotal;
+    renderOptions();
+    renderStockAccordions();
+  });
+}
+
 function deleteManagedProduct(index) {
   managedProducts.splice(index, 1);
   products.splice(index, 1);
@@ -103,7 +113,7 @@ function renderStockAccordions() {
       <strong>${members[key]}</strong>
       <span>總 ${product.totalSets}</span>
       <span>自留 ${product.reserved[key]}</span>
-      <span>可售 ${product.totalSets - product.reserved[key]}</span>
+      <span>可售 ${Math.max(0, product.totalSets - product.reserved[key])}</span>
       <span>已售 ${product.sold[key]}</span>
       <span class="tag ${amount <= 0 ? "warn" : "ok"}">剩 ${amount}</span>
     </div>
@@ -127,4 +137,5 @@ function renderStockAccordions() {
 bindEntry();
 renderManagedProducts();
 bindAddProduct();
+bindInventoryInputs();
 renderStockAccordions();

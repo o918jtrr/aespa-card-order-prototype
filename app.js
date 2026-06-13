@@ -7,7 +7,7 @@ const members = {
 
 const product = {
   name: "",
-  totalSets: 5,
+  totalSets: 0,
   reserved: { karina: 0, giselle: 0, winter: 2, ningning: 0 },
   sold: { karina: 0, giselle: 0, winter: 0, ningning: 0 },
   prices: {},
@@ -58,7 +58,7 @@ function remainingByMember() {
   return Object.fromEntries(
     Object.keys(members).map((key) => [
       key,
-      product.totalSets - product.reserved[key] - product.sold[key],
+      Math.max(0, product.totalSets - product.reserved[key] - product.sold[key]),
     ]),
   );
 }
@@ -67,6 +67,14 @@ function remainingByMember() {
 function optionStock(option) {
   const remaining = remainingByMember();
   return Math.min(...optionNeeds[option].map((member) => remaining[member]));
+}
+
+function isOptionConfigured(option) {
+  return product.totalSets > 0 && Number(product.prices[option]) > 0;
+}
+
+function configuredOptionCount() {
+  return Object.keys(optionNeeds).filter((option) => isOptionConfigured(option) && optionStock(option) > 0).length;
 }
 
 function renderProducts() {
@@ -85,7 +93,7 @@ function renderProducts() {
       <div class="product-card-body">
         <strong>${name}</strong>
         <p>非現貨代購皆需要等 30 至 60 天。</p>
-        <div class="product-meta"><span>${options}</span><span>${index === 0 ? "可下單品項依庫存顯示" : stock}</span></div>
+        <div class="product-meta"><span>${configuredOptionCount()} 個可下單品項</span><span>${index === 0 ? "依庫存顯示" : stock}</span></div>
       </div>
     </article>
   `).join("");
@@ -105,10 +113,18 @@ function updateStorefrontAvailability() {
 
 function renderOptions() {
   const grid = document.querySelector("#optionGrid");
-  grid.innerHTML = Object.keys(optionNeeds).map((option) => {
+  const configuredOptions = Object.keys(optionNeeds).filter(isOptionConfigured);
+  document.querySelector("#orderButton").classList.toggle("hidden", configuredOptions.length === 0);
+
+  if (configuredOptions.length === 0) {
+    grid.innerHTML = `<article class="empty-state">此商品尚未開放可下單品項。</article>`;
+    return;
+  }
+
+  grid.innerHTML = configuredOptions.map((option) => {
     const stock = optionStock(option);
     const disabled = stock <= 0;
-    const price = product.prices[option] ? `NT$${product.prices[option]}` : "未定價";
+    const price = `NT$${product.prices[option]}`;
     return `
       <button class="option-button" data-option="${option}" ${disabled ? "disabled" : ""}>
         ${option}<small>${disabled ? "售完" : `${price} · 剩 ${stock}`}</small>
@@ -135,12 +151,13 @@ function selectOption(option) {
 function renderStock() {
   const rows = Object.entries(remainingByMember()).map(([key, remaining]) => {
     const sellable = product.totalSets - product.reserved[key];
+    const safeSellable = Math.max(0, sellable);
     return `
       <div class="table-row">
         <strong>${members[key]}</strong>
         <span>總 ${product.totalSets}</span>
         <span>自留 ${product.reserved[key]}</span>
-        <span>可售 ${sellable}</span>
+        <span>可售 ${safeSellable}</span>
         <span>已售 ${product.sold[key]}</span>
         <span class="tag ${remaining <= 0 ? "warn" : "ok"}">剩 ${remaining}</span>
       </div>
@@ -158,7 +175,7 @@ function renderItemEditor() {
         ${itemPreviewLabel(code, name)}
       </div>
       <label>品項標題<input value="${title}" /></label>
-      <label>品項單價<input value="${product.prices[code] || ""}" placeholder="NT$" /></label>
+      <label>品項單價<input value="${product.prices[code] || ""}" placeholder="NT$" data-option-price="${code}" /></label>
       <div class="image-field">
         <label>品項圖片<input type="file" accept="image/*" data-preview-input="itemPreview${index}" /></label>
         <button class="ghost-button clear-image" data-clear-preview="itemPreview${index}" data-code="${code}" data-name="${name}">
@@ -170,6 +187,7 @@ function renderItemEditor() {
   bindItemDeletes();
   bindImagePreviews();
   bindImageClears();
+  bindPriceInputs();
 }
 
 function itemPreviewLabel(code, name) {
@@ -220,6 +238,21 @@ function bindImageClears() {
       const input = document.querySelector(`[data-preview-input="${previewId}"]`);
       if (input) input.value = "";
       if (preview) preview.innerHTML = itemPreviewLabel(button.dataset.code, button.dataset.name);
+    });
+  });
+}
+
+function bindPriceInputs() {
+  document.querySelectorAll("[data-option-price]").forEach((input) => {
+    input.addEventListener("input", () => {
+      const option = input.dataset.optionPrice;
+      const price = Number(input.value);
+      if (price > 0) {
+        product.prices[option] = price;
+      } else {
+        delete product.prices[option];
+      }
+      renderOptions();
     });
   });
 }
